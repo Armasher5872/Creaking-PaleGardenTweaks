@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_21",
+  "package": "net.phazoganon.creakingpalegardentweaks.mixin",
+  "refmap": "mixins.creakingpalegardentweaks.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "entity.mob.CreakingMixin"
+  ]
+}
