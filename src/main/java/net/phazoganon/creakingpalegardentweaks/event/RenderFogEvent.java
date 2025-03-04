@@ -40,8 +40,29 @@ public class RenderFogEvent {
         if (distanceGardenFar < minGardenDistanceFar) {
             if (active) {
                 if (hasHaziness) {
-                    minGardenDistanceFar = 3F;
-                    minGardenDistanceClose = 0F;
+                    if (minGardenDistanceFar > 6F) {
+                        float shiftFar = 0.5F*(distanceGardenFar/100);
+                        minGardenDistanceFar -= shiftFar;
+                    }
+                    if (minGardenDistanceClose > 0F) {
+                        if (minGardenDistanceClose < 0.05F) {
+                            minGardenDistanceClose = 0F;
+                        }
+                        else {
+                            float shiftClose = 0.5F*(distanceGardenClose/80);
+                            minGardenDistanceClose -= shiftClose;
+                        }
+                    }
+                }
+                else {
+                    if (minGardenDistanceFar < 16F) {
+                        float shiftFar = 0.5F*(distanceGardenFar/100);
+                        minGardenDistanceFar += shiftFar;
+                    }
+                    if (minGardenDistanceClose < 6F) {
+                        float shiftClose = 0.5F*(distanceGardenClose/80);
+                        minGardenDistanceClose += shiftClose;
+                    }
                 }
                 distanceGardenClose = minGardenDistanceClose;
                 distanceGardenFar = minGardenDistanceFar;
@@ -67,19 +88,15 @@ public class RenderFogEvent {
     }
     @SubscribeEvent
     private static void onComputeFogColor(ViewportEvent.ComputeFogColor computeFogColor) {
-        if (distanceGardenFar >= 16F) {
-            if (active) {
-                computeFogColor.setRed(1F);
-                computeFogColor.setGreen(1F);
-                computeFogColor.setBlue(1F);
-            }
+        if (distanceGardenFar >= 16F || active) {
+            computeFogColor.setRed(1F);
+            computeFogColor.setGreen(1F);
+            computeFogColor.setBlue(1F);
         }
-        if (distanceGardenFar < 1600F) {
-            if (!active) {
-                computeFogColor.setRed(1F);
-                computeFogColor.setGreen(1F);
-                computeFogColor.setBlue(1F);
-            }
+        if (distanceGardenFar < 1600F || !active) {
+            computeFogColor.setRed(1F);
+            computeFogColor.setGreen(1F);
+            computeFogColor.setBlue(1F);
         }
     }
     @SubscribeEvent
